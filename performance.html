@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실시간 성과 대시보드 | 무역안보 통합 플랫폼</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="정량적 성과와 ROI로 입증하는 무역안보 플랫폼의 혁신적 효과">
+    <meta name="keywords" content="무역안보, 성과지표, ROI, 효율성, 경제효과">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        :root {
+            /* Primary Colors */
+            --primary-blue: #0052CC;
+            --primary-purple: #8777D9;
+            --success-green: #00875A;
+            --warning-yellow: #FFAB00;
+            --danger-red: #DE350B;
+            
+            /* Neutral Colors */
+            --white: #FFFFFF;
+            --light-gray: #F4F5F7;
+            --medium-gray: #A5ADBA;
+            --dark-gray: #172B4D;
+            
+            /* Gradient Colors */
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            --gradient-success: linear-gradient(135deg, #00C896, var(--success-green));
+            --gradient-hero: linear-gradient(135deg, #001B48, var(--primary-blue), var(--primary-purple));
+            
+            /* Shadows */
+            --shadow-light: 0 2px 8px rgba(0, 82, 204, 0.1);
+            --shadow-medium: 0 4px 16px rgba(0, 82, 204, 0.15);
+            --shadow-heavy: 0 8px 32px rgba(0, 82, 204, 0.2);
+            
+            /* Typography */
+            --font-korean: 'Pretendard', sans-serif;
+            --font-english: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-korean);
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background: var(--light-gray);
+        }
+
+        /* Header Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 82, 204, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 6rem;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background: var(--gradient-hero);
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #FFFFFF, #B3D9FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-description {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Live Stats Section */
+        .live-stats {
+            background: white;
+            padding: 3rem 2rem;
+            margin: -2rem 2rem 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            z-index: 10;
+        }
+
+        .live-stats-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--light-gray);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            font-family: var(--font-english);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--medium-gray);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .stat-change.positive {
+            background: rgba(0, 135, 90, 0.1);
+            color: var(--success-green);
+        }
+
+        .stat-change.negative {
+            background: rgba(222, 53, 11, 0.1);
+            color: var(--danger-red);
+        }
+
+        /* Charts Section */
+        .charts-section {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(0, 82, 204, 0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+        }
+
+        .chart-subtitle {
+            font-size: 0.9rem;
+            color: var(--medium-gray);
+            margin-top: 0.25rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-container.large {
+            height: 400px;
+        }
+
+        /* Comparison Tables */
+        .comparison-section {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .comparison-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark-gray);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .comparison-table th {
+            background: var(--light-gray);
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .comparison-table td.number {
+            font-family: var(--font-english);
+            font-weight: 600;
+        }
+
+        .comparison-table td.highlight {
+            background: rgba(0, 82, 204, 0.05);
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        /* ROI Calculator */
+        .roi-section {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .roi-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .roi-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .roi-description {
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .roi-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .roi-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .roi-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-english);
+        }
+
+        .roi-unit {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Loading Animation */
+        .counter {
+            transition: all 0.3s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-card:hover .stat-number {
+            animation: pulse 1s ease-in-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .live-stats {
+                margin: -1rem 1rem 1rem;
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-header {
+                padding: 3rem 1rem 1rem;
+            }
+            
+            .charts-section {
+                padding: 1rem;
+            }
+            
+            .comparison-section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo">
+                <span>🛡️</span>
+                <span>TSIP 2025</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="ai-system.html">AI 판별</a></li>
+                <li><a href="education.html">국민 참여</a></li>
+                <li><a href="business.html">기업 지원</a></li>
+                <li><a href="performance.html" class="active">성과</a></li>
+                <li><a href="index.html#roadmap">로드맵</a></li>
+            </ul>
+            <a href="ai-system.html" class="cta-button">🚀 데모 체험</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Header -->
+        <section class="dashboard-header">
+            <div class="header-content">
+                <div class="header-badge">
+                    📊 실시간 성과 모니터링
+                </div>
+                
+                <h1 class="header-title">
+                    혁신적 성과로 입증된 효과
+                </h1>
+                
+                <p class="header-description">
+                    정량적 데이터와 실시간 지표로 증명하는 무역안보 플랫폼의 압도적 성능과 경제적 가치
+                </p>
+            </div>
+        </section>
+
+        <!-- Live Stats Section -->
+        <section class="live-stats">
+            <div class="live-stats-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-number counter" data-target="95.7" data-suffix="%">0%</div>
+                        <div class="stat-label">처리시간 단축률</div>
+                        <div class="stat-change positive">+2300% 개선</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-number counter" data-target="96.8" data-suffix="%">0%</div>
+                        <div class="stat-label">AI 판정 정확도</div>
+                        <div class="stat-change positive">+15.2% 향상</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-number counter" data-target="757" data-suffix="억원">0억원</div>
+                        <div class="stat-label">연간 비용 절감</div>
+                        <div class="stat-change positive">+450% ROI</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-number counter" data-target="5023" data-suffix="억원">0억원</div>
+                        <div class="stat-label">수출 증대 효과</div>
+                        <div class="stat-change positive">+280% 성장</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🏢</div>
+                        <div class="stat-number counter" data-target="25000" data-suffix="개">0개</div>
+                        <div class="stat-label">등록 기업 수</div>
+                        <div class="stat-change positive">매월 +12% 증가</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-number counter" data-target="80000" data-suffix="명">0명</div>
+                        <div class="stat-label">교육 이수자</div>
+                        <div class="stat-change positive">목표 달성률 95%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title">처리 시간 비교 분석</h3>
+                            <p class="chart-subtitle">기존 시스템 vs AI 플랫폼 (일별 기준)</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="timeComparisonChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title">월별 사용자 증가</h3>
+                            <p class="chart-subtitle">플랫폼 채택률 추이</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="userGrowthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title">국가별 성능 비교</h3>
+                            <p class="chart-subtitle">세계 주요국 무역안보 시스템 벤치마킹</p>
+                        </div>
+                    </div>
+                    <div class="chart-container large">
+                        <canvas id="countryComparisonChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <h3 class="chart-title">경제 효과 분석</h3>
+                            <p class="chart-subtitle">3년간 누적 경제 효과 (조원)</p>
+                        </div>
+                    </div>
+                    <div class="chart-container large">
+                        <canvas id="economicImpactChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROI Section -->
+        <section class="roi-section">
+            <div class="roi-content">
+                <h2 class="roi-title">투자 대비 수익률 (ROI)</h2>
+                <p class="roi-description">
+                    3년간 총 투자 대비 압도적인 경제적 성과 창출
+                </p>
+                
+                <div class="roi-grid">
+                    <div class="roi-card">
+                        <h3>총 투자금액</h3>
+                        <div class="roi-amount counter" data-target="450" data-suffix="억원">0억원</div>
+                        <div class="roi-unit">3년간 누적</div>
+                    </div>
+                    
+                    <div class="roi-card">
+                        <h3>누적 수익</h3>
+                        <div class="roi-amount counter" data-target="2340" data-suffix="억원">0억원</div>
+                        <div class="roi-unit">직간접 효과 합계</div>
+                    </div>
+                    
+                    <div class="roi-card">
+                        <h3>ROI 비율</h3>
+                        <div class="roi-amount counter" data-target="520" data-suffix="%">0%</div>
+                        <div class="roi-unit">업계 평균 대비 5.2배</div>
+                    </div>
+                    
+                    <div class="roi-card">
+                        <h3>손익분기점</h3>
+                        <div class="roi-amount counter" data-target="8" data-suffix="개월">0개월</div>
+                        <div class="roi-unit">서비스 런칭 후</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Tables -->
+        <section class="comparison-section">
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h3 class="comparison-title">🌍 국제 시스템 비교</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>한국 (TSIP)</th>
+                                <th>미국 (ECASS)</th>
+                                <th>독일 (ATLAS)</th>
+                                <th>일본 (CISTEC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>처리시간</td>
+                                <td class="number highlight">1일</td>
+                                <td class="number">7-14일</td>
+                                <td class="number">5-10일</td>
+                                <td class="number">10-21일</td>
+                            </tr>
+                            <tr>
+                                <td>자동화율</td>
+                                <td class="number highlight">96.8%</td>
+                                <td class="number">75%</td>
+                                <td class="number">68%</td>
+                                <td class="number">45%</td>
+                            </tr>
+                            <tr>
+                                <td>정확도</td>
+                                <td class="number highlight">96.8%</td>
+                                <td class="number">91%</td>
+                                <td class="number">89%</td>
+                                <td class="number">87%</td>
+                            </tr>
+                            <tr>
+                                <td>비용효율성</td>
+                                <td class="number highlight">최고</td>
+                                <td class="number">높음</td>
+                                <td class="number">보통</td>
+                                <td class="number">보통</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="comparison-card">
+                    <h3 class="comparison-title">📊 Before vs After</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>항목</th>
+                                <th>기존 시스템</th>
+                                <th>AI 플랫폼</th>
+                                <th>개선율</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>심사 기간</td>
+                                <td class="number">23일</td>
+                                <td class="number highlight">1일</td>
+                                <td class="number">2300% ↑</td>
+                            </tr>
+                            <tr>
+                                <td>인력 투입</td>
+                                <td class="number">5-8명</td>
+                                <td class="number highlight">1명</td>
+                                <td class="number">700% ↑</td>
+                            </tr>
+                            <tr>
+                                <td>연간 비용</td>
+                                <td class="number">1,200억원</td>
+                                <td class="number highlight">443억원</td>
+                                <td class="number">63% ↓</td>
+                            </tr>
+                            <tr>
+                                <td>오류율</td>
+                                <td class="number">8.7%</td>
+                                <td class="number highlight">3.2%</td>
+                                <td class="number">63% ↓</td>
+                            </tr>
+                            <tr>
+                                <td>만족도</td>
+                                <td class="number">67%</td>
+                                <td class="number highlight">94%</td>
+                                <td class="number">40% ↑</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const suffix = counter.getAttribute('data-suffix') || '';
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // 60fps
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    
+                    if (target >= 1000) {
+                        counter.textContent = Math.floor(current).toLocaleString() + suffix;
+                    } else {
+                        counter.textContent = current.toFixed(1) + suffix;
+                    }
+                }, 16);
+            });
+        }
+
+        // Chart Creation
+        function createCharts() {
+            // Time Comparison Chart
+            const timeCtx = document.getElementById('timeComparisonChart').getContext('2d');
+            new Chart(timeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['문서 접수', '1차 검토', '전문가 심사', '최종 승인'],
+                    datasets: [{
+                        label: '기존 시스템 (일)',
+                        data: [1, 8, 12, 2],
+                        backgroundColor: 'rgba(222, 53, 11, 0.7)',
+                        borderColor: '#DE350B',
+                        borderWidth: 2
+                    }, {
+                        label: 'AI 플랫폼 (시간)',
+                        data: [0.1, 0.2, 0.5, 0.2],
+                        backgroundColor: 'rgba(0, 82, 204, 0.7)',
+                        borderColor: '#0052CC',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '소요 시간'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // User Growth Chart
+            const userCtx = document.getElementById('userGrowthChart').getContext('2d');
+            new Chart(userCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                    datasets: [{
+                        label: '누적 사용자',
+                        data: [1200, 3500, 8200, 15000, 22000, 25000],
+                        borderColor: '#8777D9',
+                        backgroundColor: 'rgba(135, 119, 217, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '사용자 수'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Country Comparison Chart
+            const countryCtx = document.getElementById('countryComparisonChart').getContext('2d');
+            new Chart(countryCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['처리속도', '정확도', '비용효율성', '사용편의성', '혁신성'],
+                    datasets: [{
+                        label: '한국 (TSIP)',
+                        data: [98, 97, 95, 92, 99],
+                        borderColor: '#0052CC',
+                        backgroundColor: 'rgba(0, 82, 204, 0.2)'
+                    }, {
+                        label: '미국 (ECASS)',
+                        data: [75, 85, 70, 80, 75],
+                        borderColor: '#DE350B',
+                        backgroundColor: 'rgba(222, 53, 11, 0.2)'
+                    }, {
+                        label: '독일 (ATLAS)',
+                        data: [70, 82, 75, 85, 70],
+                        borderColor: '#FFAB00',
+                        backgroundColor: 'rgba(255, 171, 0, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Economic Impact Chart
+            const impactCtx = document.getElementById('economicImpactChart').getContext('2d');
+            new Chart(impactCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['수출 증대', '비용 절감', '생산성 향상', '신규 투자'],
+                    datasets: [{
+                        data: [5023, 757, 1200, 1800],
+                        backgroundColor: [
+                            'rgba(0, 135, 90, 0.8)',
+                            'rgba(0, 82, 204, 0.8)',
+                            'rgba(135, 119, 217, 0.8)',
+                            'rgba(255, 171, 0, 0.8)'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start counter animation
+            setTimeout(animateCounters, 500);
+            
+            // Create charts
+            setTimeout(createCharts, 1000);
+        });
+
+        // Add scroll-triggered animations
+        window.addEventListener('scroll', function() {
+            const cards = document.querySelectorAll('.stat-card, .chart-card, .comparison-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Add initial styles for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.stat-card, .chart-card, .comparison-card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+            });
+        });
+    </script>
+</body>
+</html>

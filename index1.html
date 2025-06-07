@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 기반 국민 참여형 무역안보 통합 플랫폼 | TSIP 2025</title>
+    
+    <!-- Meta Tags for SEO -->
+    <meta name="description" content="AI가 지원하고, 국민이 참여하며, 기업이 성장하는 스마트 무역안보 생태계">
+    <meta name="keywords" content="무역안보, AI, 수출통제, 전략물자, 인공지능">
+    <meta name="author" content="박용환">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="AI 기반 국민 참여형 무역안보 통합 플랫폼">
+    <meta property="og:description" content="세계 최초 AI 기반 수출통제 시스템으로 무역안보 혁신을 실현합니다">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <style>
+        :root {
+            /* Primary Colors */
+            --primary-blue: #0052CC;
+            --primary-purple: #8777D9;
+            --success-green: #00875A;
+            --warning-yellow: #FFAB00;
+            --danger-red: #DE350B;
+            
+            /* Neutral Colors */
+            --white: #FFFFFF;
+            --light-gray: #F4F5F7;
+            --medium-gray: #A5ADBA;
+            --dark-gray: #172B4D;
+            
+            /* Gradient Colors */
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            --gradient-success: linear-gradient(135deg, #00C896, var(--success-green));
+            --gradient-hero: linear-gradient(135deg, #001B48, var(--primary-blue), var(--primary-purple));
+            
+            /* Shadows */
+            --shadow-light: 0 2px 8px rgba(0, 82, 204, 0.1);
+            --shadow-medium: 0 4px 16px rgba(0, 82, 204, 0.15);
+            --shadow-heavy: 0 8px 32px rgba(0, 82, 204, 0.2);
+            
+            /* Typography */
+            --font-korean: 'Pretendard', sans-serif;
+            --font-english: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-korean);
+            line-height: 1.6;
+            color: var(--dark-gray);
+            overflow-x: hidden;
+        }
+
+        /* Header Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 82, 204, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(0, 27, 72, 0.8), 
+                rgba(0, 82, 204, 0.7), 
+                rgba(135, 119, 217, 0.6)
+            );
+            z-index: 1;
+        }
+
+        .hero-slide:nth-child(1) {
+            background-image: url('img/pexels-googledeepmind-17485708.jpg');
+        }
+
+        .hero-slide:nth-child(2) {
+            background-image: url('img/pexels-frans-van-heerden-201846-1624695.jpg');
+        }
+
+        .hero-slide:nth-child(3) {
+            background-image: url('img/pexels-thisisengineering-3861976.jpg');
+        }
+
+        .hero-slide:nth-child(4) {
+            background-image: url('img/pexels-tomfisk-1554646.jpg');
+        }
+
+        .hero-indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 20;
+        }
+
+        .hero-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hero-indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grid" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="rgba(255,255,255,0.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><circle cx="500" cy="500" r="500" fill="url(%23grid)"/></svg>') center/cover;
+            opacity: 0.3;
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 1200px;
+            width: 100%;
+            padding: 2rem;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            text-align: center;
+        }
+
+        .hero-content.active {
+            opacity: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #FFFFFF, #B3D9FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero-description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .section-description {
+            font-size: 1.25rem;
+            color: var(--medium-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Three Pillars Section */
+        .pillars-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin: 4rem 0;
+        }
+
+        .pillar-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 82, 204, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .pillar-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .pillar-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .pillar-description {
+            color: var(--medium-gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .pillar-features {
+            list-style: none;
+            text-align: left;
+        }
+
+        .pillar-features li {
+            padding: 0.5rem 0;
+            color: var(--dark-gray);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .pillar-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
+        .pillar-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+
+        .pillar-link:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .pillar-cta {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .pillar-card:hover .pillar-cta {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-arrow {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .pillar-card:hover .cta-arrow {
+            transform: translateX(5px);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: var(--light-gray);
+            padding: 6rem 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--medium-gray);
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            color: var(--success-green);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--gradient-hero);
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        /* Roadmap Section */
+        .roadmap-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .roadmap-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--gradient-primary);
+            transform: translateX(-50%);
+        }
+
+        .roadmap-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .roadmap-item:nth-child(odd) {
+            justify-content: flex-end;
+        }
+
+        .roadmap-item:nth-child(even) {
+            justify-content: flex-start;
+        }
+
+        .roadmap-year {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-primary);
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            z-index: 10;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .roadmap-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-light);
+            max-width: 400px;
+            margin: 0 2rem;
+            border: 1px solid rgba(0, 82, 204, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-content:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .roadmap-content h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .roadmap-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .roadmap-content li {
+            padding: 0.5rem 0;
+            color: var(--dark-gray);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .roadmap-content li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background: #001B48;
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Loading Animation */
+        .counter {
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-content {
+                padding: 1rem;
+                width: 90%;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pillars-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .roadmap-timeline::before {
+                left: 2rem;
+            }
+
+            .roadmap-item {
+                justify-content: flex-start !important;
+                margin-left: 4rem;
+            }
+
+            .roadmap-year {
+                left: 2rem;
+                transform: translateX(-50%);
+            }
+
+            .roadmap-content {
+                margin: 0;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 4rem 1rem;
+            }
+
+            .hero-content {
+                padding: 1rem;
+                width: 95%;
+                top: 45%;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-description {
+                font-size: 0.95rem;
+            }
+
+            .hero-stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <span>🛡️</span>
+                <span>TSIP 2025</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">홈</a></li>
+                <li><a href="ai-system.html">AI 판별</a></li>
+                <li><a href="education.html">국민 참여</a></li>
+                <li><a href="business.html">기업 지원</a></li>
+                <li><a href="performance.html">성과</a></li>
+                <li><a href="#roadmap">로드맵</a></li>
+            </ul>
+            <a href="ai-system.html" class="cta-button">🚀 데모 체험</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-slider">
+            <div class="hero-slide active"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+            <div class="hero-slide"></div>
+        </div>
+        <div class="hero-background"></div>
+        
+        <!-- Slide 1: AI 기반 자동 판별 시스템 -->
+        <div class="hero-content active" data-slide="0">
+            <div class="hero-badge floating">
+                🤖 세계 최초 AI 기반 무역안보 시스템
+            </div>
+            
+            <h1 class="hero-title">
+                AI가 혁신하는<br>
+                무역안보의 미래
+            </h1>
+            
+            <h2 class="hero-subtitle">
+                지능형 자동 판별 시스템
+            </h2>
+            
+            <p class="hero-description">
+                첨단 NLP 기술과 머신러닝으로 23일이 걸리던 심사를 1일로 단축,<br>
+                96.8% 정확도로 전략물자를 실시간 분석합니다
+            </p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="96.8">0</div>
+                    <div class="hero-stat-label">AI 판정 정확도 (%)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="95.7">0</div>
+                    <div class="hero-stat-label">처리시간 단축률 (%)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="24">0</div>
+                    <div class="hero-stat-label">연중무휴 서비스 (시간)</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="ai-system.html" class="btn-primary">
+                    🤖 AI 시스템 체험하기
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Slide 2: 국민 참여형 교육 플랫폼 -->
+        <div class="hero-content" data-slide="1">
+            <div class="hero-badge floating">
+                👥 전 국민이 함께하는 무역안보
+            </div>
+            
+            <h1 class="hero-title">
+                국민이 참여하고<br>
+                함께 만드는 안전
+            </h1>
+            
+            <h2 class="hero-subtitle">
+                참여형 교육 생태계
+            </h2>
+            
+            <p class="hero-description">
+                게임형 학습, VR 체험, 전문가 네트워크로<br>
+                무역안보 전문가 80,000명을 양성합니다
+            </p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="80000">0</div>
+                    <div class="hero-stat-label">목표 교육 이수자 (명)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="500">0</div>
+                    <div class="hero-stat-label">교육 콘텐츠 수 (개)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="95">0</div>
+                    <div class="hero-stat-label">학습 만족도 (%)</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="education.html" class="btn-primary">
+                    👥 교육 플랫폼 체험하기
+                </a>
+            </div>
+        </div>
+
+        <!-- Slide 3: 기업 성장 지원 서비스 -->
+        <div class="hero-content" data-slide="2">
+            <div class="hero-badge floating">
+                🏢 중소기업부터 대기업까지
+            </div>
+            
+            <h1 class="hero-title">
+                기업이 성장하는<br>
+                글로벌 진출 지원
+            </h1>
+            
+            <h2 class="hero-subtitle">
+                원스톱 비즈니스 서비스
+            </h2>
+            
+            <p class="hero-description">
+                AI 상담, 전문가 연결, 규제 정보 제공으로<br>
+                25,000개 기업의 수출 경쟁력을 강화합니다
+            </p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="25000">0</div>
+                    <div class="hero-stat-label">목표 등록 기업 (개)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="757">0</div>
+                    <div class="hero-stat-label">연간 비용절감 (억원)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="98">0</div>
+                    <div class="hero-stat-label">서비스 만족도 (%)</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="business.html" class="btn-primary">
+                    🏢 기업 서비스 체험하기
+                </a>
+            </div>
+        </div>
+
+        <!-- Slide 4: 통합 성과 및 미래 비전 -->
+        <div class="hero-content" data-slide="3">
+            <div class="hero-badge floating">
+                🏆 2025 무역안보의 날 기념 공모전 출품작
+            </div>
+            
+            <h1 class="hero-title">
+                대한민국이 선도하는<br>
+                스마트 무역안보 시대
+            </h1>
+            
+            <h2 class="hero-subtitle">
+                혁신적 경제 효과 창출
+            </h2>
+            
+            <p class="hero-description">
+                AI 기술, 국민 참여, 기업 성장이 결합된 통합 플랫폼으로<br>
+                연간 5.68조원의 수출 증대와 1.8조원의 투자 유치를 실현합니다
+            </p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="5.68">0</div>
+                    <div class="hero-stat-label">수출 증대 효과 (조원/년)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="1.8">0</div>
+                    <div class="hero-stat-label">FDI 유치 효과 (조원/년)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="12.5">0</div>
+                    <div class="hero-stat-label">총 경제효과 (조원/년)</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="ai-system.html" class="btn-primary">
+                    🚀 통합 플랫폼 체험하기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Pillars Section -->
+    <section id="pillars" class="section">
+        <div class="section-header">
+            <div class="section-badge">🏗️ 핵심 아키텍처</div>
+            <h2 class="section-title">3대 Pillar로 구성된 통합 생태계</h2>
+            <p class="section-description">
+                AI 기술, 국민 참여, 기업 성장이 유기적으로 연결된 혁신적 플랫폼
+            </p>
+        </div>
+
+        <div class="pillars-container">
+            <a href="ai-system.html" class="pillar-card pillar-link">
+                <div class="pillar-icon">🤖</div>
+                <h3 class="pillar-title">Pillar 1: AI 기반 자동 판별</h3>
+                <p class="pillar-description">
+                    세계 최고 수준의 AI 엔진으로 실시간 문서 분석과 위험도 평가를 수행합니다
+                </p>
+                <ul class="pillar-features">
+                    <li>NLP 기반 다중 문서 분석 엔진</li>
+                    <li>실시간 위험도 평가 시스템</li>
+                    <li>지능형 학습 및 업데이트 모듈</li>
+                    <li>API 기반 기업 연동 서비스</li>
+                </ul>
+                <div class="pillar-cta">
+                    <span class="cta-arrow">→</span>
+                    <span class="cta-text">AI 시스템 체험하기</span>
+                </div>
+            </a>
+
+            <a href="education.html" class="pillar-card pillar-link">
+                <div class="pillar-icon">👥</div>
+                <h3 class="pillar-title">Pillar 2: 국민 참여형 교육</h3>
+                <p class="pillar-description">
+                    전 국민이 함께 만들어가는 무역안보 인식 확산과 전문가 네트워크 구축
+                </p>
+                <ul class="pillar-features">
+                    <li>맞춤형 교육 콘텐츠 플랫폼</li>
+                    <li>시민 신고 및 모니터링 시스템</li>
+                    <li>전문가 네트워크 구축</li>
+                    <li>소셜 러닝 커뮤니티</li>
+                </ul>
+                <div class="pillar-cta">
+                    <span class="cta-arrow">→</span>
+                    <span class="cta-text">교육 플랫폼 체험하기</span>
+                </div>
+            </a>
+
+            <a href="business.html" class="pillar-card pillar-link">
+                <div class="pillar-icon">🏢</div>
+                <h3 class="pillar-title">Pillar 3: 기업 성장 지원</h3>
+                <p class="pillar-description">
+                    중소기업부터 대기업까지 모든 기업의 글로벌 진출을 원스톱으로 지원
+                </p>
+                <ul class="pillar-features">
+                    <li>중소기업 전용 간편 서비스</li>
+                    <li>24/7 AI 상담 및 전문가 연결</li>
+                    <li>글로벌 규제 정보 제공</li>
+                    <li>원스톱 수출 지원 서비스</li>
+                </ul>
+                <div class="pillar-cta">
+                    <span class="cta-arrow">→</span>
+                    <span class="cta-text">기업 서비스 체험하기</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Performance Stats Section -->
+    <section id="performance" class="stats-section">
+        <div class="section-header">
+            <div class="section-badge">📊 성과 지표</div>
+            <h2 class="section-title">혁신적 성과로 입증된 효과</h2>
+            <p class="section-description">
+                정량적 데이터로 증명하는 플랫폼의 압도적 성능과 경제적 효과
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="23">0</div>
+                <div class="stat-label">기존 처리시간 (일)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="1">0</div>
+                <div class="stat-label">목표 처리시간 (일)</div>
+                <div class="stat-change">▲ 95.7% 개선</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="25000">0</div>
+                <div class="stat-label">등록 기업 수 (개)</div>
+                <div class="stat-change">▲ 2027년 목표</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="80000">0</div>
+                <div class="stat-label">교육 이수자 (명)</div>
+                <div class="stat-change">▲ 2027년 목표</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="5.68">0</div>
+                <div class="stat-label">수출 증대 (조원/년)</div>
+                <div class="stat-change">▲ 혁신적 효과</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number counter" data-target="1.8">0</div>
+                <div class="stat-label">FDI 증가 (조원/년)</div>
+                <div class="stat-change">▲ 투자 유치</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="section">
+        <div class="section-header">
+            <div class="section-badge">🗺️ 발전 계획</div>
+            <h2 class="section-title">플랫폼 발전 로드맵</h2>
+            <p class="section-description">
+                2025년부터 2027년까지 단계별 혁신과 확장 계획
+            </p>
+        </div>
+
+        <div class="roadmap-container">
+            <div class="roadmap-timeline">
+                <div class="roadmap-item">
+                    <div class="roadmap-year">2025</div>
+                    <div class="roadmap-content">
+                        <h3>플랫폼 런칭 및 기반 구축</h3>
+                        <ul>
+                            <li>AI 기반 자동 판별 시스템 런칭</li>
+                            <li>1,000개 기업 파일럿 프로그램</li>
+                            <li>기본 교육 콘텐츠 제공</li>
+                            <li>무역안보 인식 확산 캠페인</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-year">2026</div>
+                    <div class="roadmap-content">
+                        <h3>기능 확장 및 사용자 증대</h3>
+                        <ul>
+                            <li>고급 AI 분석 기능 추가</li>
+                            <li>10,000개 기업 확산</li>
+                            <li>VR/AR 교육 콘텐츠 도입</li>
+                            <li>국제 규제 정보 연동</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-year">2027</div>
+                    <div class="roadmap-content">
+                        <h3>글로벌 확장 및 완성</h3>
+                        <ul>
+                            <li>25,000개 기업 전면 확산</li>
+                            <li>80,000명 교육 이수 달성</li>
+                            <li>해외 진출 지원 서비스</li>
+                            <li>AI 예측 분석 고도화</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">미래의 무역안보를 지금 체험하세요</h2>
+            <p class="cta-description">
+                세계 최고 수준의 AI 기반 무역안보 플랫폼이<br>
+                어떻게 대한민국의 미래를 바꿀지 직접 확인해보세요
+            </p>
+            <div class="hero-buttons">
+                <a href="ai-system.html" class="btn-primary">
+                    🤖 AI 판별 시스템 체험
+                </a>
+                <a href="education.html" class="btn-secondary">
+                    👥 교육 플랫폼 둘러보기
+                </a>
+                <a href="business.html" class="btn-secondary">
+                    🏢 기업 지원 서비스 보기
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-indicators">
+            <div class="hero-indicator active" data-slide="0"></div>
+            <div class="hero-indicator" data-slide="1"></div>
+            <div class="hero-indicator" data-slide="2"></div>
+            <div class="hero-indicator" data-slide="3"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#about">프로젝트 소개</a>
+                <a href="#technology">기술 스택</a>
+                <a href="#team">개발팀</a>
+                <a href="#contact">문의하기</a>
+                <a href="#privacy">개인정보처리방침</a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 AI 기반 국민 참여형 무역안보 통합 플랫폼. 박용환 제작.</p>
+                <p>2025년 무역안보의 날 기념 공모전 출품작</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin();
+
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    
+                    // Format number based on value
+                    if (target >= 1000) {
+                        counter.textContent = current.toLocaleString('ko-KR', {
+                            maximumFractionDigits: 0
+                        });
+                    } else {
+                        counter.textContent = current.toFixed(1);
+                    }
+                }, 20);
+            });
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header Background on Scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 82, 204, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    
+                    // Trigger counter animation when stats section is visible
+                    if (entry.target.classList.contains('stats-section')) {
+                        animateCounters();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and sections
+        document.querySelectorAll('.pillar-card, .stat-card, .stats-section, .roadmap-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Start hero counter animation for active slide only in intersection observer
+        setTimeout(() => {
+            // Initial animation for first slide only
+            animateCountersForSlide(0);
+        }, 1000);
+
+        // Add dynamic floating animation to hero elements
+        gsap.to('.floating', {
+            y: -20,
+            duration: 3,
+            ease: 'power1.inOut',
+            yoyo: true,
+            repeat: -1
+        });
+
+        // Hero Slider Functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const contents = document.querySelectorAll('.hero-content');
+        const indicators = document.querySelectorAll('.hero-indicator');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            // Remove active class from all slides, contents and indicators
+            slides.forEach(slide => slide.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            // Add active class to current slide, content and indicator
+            slides[index].classList.add('active');
+            contents[index].classList.add('active');
+            indicators[index].classList.add('active');
+            
+            currentSlide = index;
+            
+            // Animate content appearance
+            gsap.from(contents[index].children, {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out',
+                delay: 0.3
+            });
+            
+            // Restart counter animation for current slide
+            setTimeout(() => {
+                animateCountersForSlide(index);
+            }, 800);
+        }
+
+        function animateCountersForSlide(slideIndex) {
+            const activeContent = contents[slideIndex];
+            const counters = activeContent.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / 60; // Faster animation
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    
+                    // Format number based on value
+                    if (target >= 1000) {
+                        counter.textContent = current.toLocaleString('ko-KR', {
+                            maximumFractionDigits: target >= 10 ? 0 : 1
+                        });
+                    } else {
+                        counter.textContent = current.toFixed(1);
+                    }
+                }, 20);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Auto-advance slides every 8 seconds (more time for reading)
+        setInterval(nextSlide, 8000);
+
+        // Add click listeners to indicators
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+
+        // Initialize first slide
+        setTimeout(() => {
+            animateCountersForSlide(0);
+        }, 1000);
+
+        // Page Load Animation
+        window.addEventListener('load', () => {
+            gsap.from('.hero-content.active > *', {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
+        });
+    </script>
+</body>
+</html>

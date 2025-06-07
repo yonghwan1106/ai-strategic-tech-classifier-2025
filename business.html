@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업 성장 지원 허브 | TSIP 2025</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0052CC;
+            --primary-purple: #8777D9;
+            --success-green: #00875A;
+            --warning-yellow: #FFAB00;
+            --danger-red: #DE350B;
+            --white: #FFFFFF;
+            --light-gray: #F4F5F7;
+            --medium-gray: #A5ADBA;
+            --dark-gray: #172B4D;
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            --gradient-business: linear-gradient(135deg, #11998e, #38ef7d);
+            --gradient-support: linear-gradient(135deg, #ffecd2, #fcb69f);
+            --shadow-light: 0 2px 8px rgba(0, 82, 204, 0.1);
+            --shadow-medium: 0 4px 16px rgba(0, 82, 204, 0.15);
+            --shadow-heavy: 0 8px 32px rgba(0, 82, 204, 0.2);
+            --font-korean: 'Pretendard', sans-serif;
+            --font-english: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-korean);
+            background: #FAFBFC;
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 82, 204, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-business);
+            color: white;
+            padding: 12rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grid" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="rgba(255,255,255,0.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><circle cx="500" cy="500" r="500" fill="url(%23grid)"/></svg>') center/cover;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #FFFFFF, #B3D9FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero-description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+            font-family: var(--font-english);
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-hero-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .nav-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+        }
+
+        .nav-breadcrumb a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--gradient-business);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-business);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="business" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23business)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn-hero {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark-gray);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            background: white;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            min-height: calc(100vh - 100px);
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #E1E5EA;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-badge {
+            background: var(--gradient-business);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Quick Diagnosis Tool */
+        .diagnosis-tool {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tool-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .diagnosis-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .step-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: white;
+            color: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step-title {
+            font-weight: 600;
+        }
+
+        .step-content {
+            margin-left: 41px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: white;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* AI Chatbot */
+        .chatbot-container {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid #E1E5EA;
+        }
+
+        .chatbot-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .bot-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .bot-info {
+            flex: 1;
+        }
+
+        .bot-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .bot-status {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #F8F9FA;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: var(--gradient-primary);
+        }
+
+        .message.user .message-avatar {
+            background: var(--gradient-business);
+        }
+
+        .message-content {
+            background: white;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            max-width: 80%;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+        }
+
+        .message.user .message-content {
+            background: var(--gradient-business);
+            color: white;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--medium-gray);
+            margin-top: 0.25rem;
+        }
+
+        .chat-input {
+            border-top: 1px solid #E1E5EA;
+            padding: 1rem;
+            background: white;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input-field {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #E1E5EA;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        .chat-input-field:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .send-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Global Regulations */
+        .regulation-updates {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .regulation-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .regulation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .regulation-country {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .country-flag {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .regulation-date {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+        }
+
+        .regulation-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .regulation-impact {
+            background: rgba(255, 171, 0, 0.1);
+            color: var(--warning-yellow);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .regulation-description {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Cost Calculator */
+        .calculator {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .calc-result {
+            background: var(--gradient-support);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .calc-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .calc-label {
+            color: var(--dark-gray);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .calc-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .breakdown-item {
+            text-align: center;
+        }
+
+        .breakdown-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .breakdown-label {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+        }
+
+        /* Success Stories */
+        .success-stories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-business);
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-business);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .company-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .company-type {
+            color: var(--medium-gray);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .story-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: #F8F9FA;
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success-green);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+        }
+
+        .story-quote {
+            background: rgba(17, 153, 142, 0.1);
+            border-left: 3px solid var(--success-green);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: var(--dark-gray);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .success-stories {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero {
+                padding: 10rem 1rem 3rem;
+            }
+            
+            .hero-badge {
+                margin-top: 1rem;
+            }
+            
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero {
+                padding: 9rem 1rem 2rem;
+            }
+            
+            .hero-badge {
+                margin-top: 1.5rem;
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Typing Animation */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3s steps(30, end);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span>🛡️</span>
+                <span>TSIP 2025</span>
+            </a>
+            
+            <div class="nav-breadcrumb">
+                <a href="index.html">홈</a>
+                <span>></span>
+                <span>Pillar 3: 기업 성장 지원 허브</span>
+            </div>
+            
+            <div class="header-actions">
+                <a href="ai-system.html" class="btn btn-secondary">🤖 AI 판별</a>
+                <a href="education.html" class="btn btn-secondary">👥 교육 플랫폼</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge floating">
+                🏢 Pillar 3: 기업 성장 지원 허브
+            </div>
+            
+            <h1 class="hero-title">
+                중소기업부터 대기업까지<br>
+                모든 기업의 글로벌 성장 파트너
+            </h1>
+            
+            <h2 class="hero-subtitle">
+                원스톱 수출 지원 서비스
+            </h2>
+            
+            <p class="hero-description">
+                AI 상담, 전문가 연결, 규제 정보 제공으로<br>
+                25,000개 기업의 수출 경쟁력을 강화합니다
+            </p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">25,000</div>
+                    <div class="hero-stat-label">목표 등록 기업 (개)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">757</div>
+                    <div class="hero-stat-label">연간 비용절감 (억원)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">24/7</div>
+                    <div class="hero-stat-label">AI 상담 서비스</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#diagnosis" class="btn-hero-primary">
+                    🎯 무료 진단 받기
+                </a>
+                <a href="#chatbot" class="btn-hero-secondary">
+                    💬 AI 상담 시작하기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Quick Diagnosis Tool -->
+            <div class="diagnosis-tool" id="diagnosis">
+                <div class="tool-header">
+                    <h2 class="tool-title">🎯 30초 간편 진단</h2>
+                    <p class="tool-subtitle">
+                        복잡한 서류 없이 간단한 질문으로 1차 수출통제 여부를 확인하세요
+                    </p>
+                </div>
+                
+                <div class="diagnosis-steps">
+                    <div class="step-item">
+                        <div class="step-header">
+                            <div class="step-number">1</div>
+                            <div class="step-title">기업 정보</div>
+                        </div>
+                        <div class="step-content">
+                            <div class="form-group">
+                                <label class="form-label">기업 유형</label>
+                                <select class="form-select">
+                                    <option>중소기업 (직원 300명 이하)</option>
+                                    <option>중견기업 (직원 300-1000명)</option>
+                                    <option>대기업 (직원 1000명 이상)</option>
+                                    <option>스타트업 (설립 3년 이하)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">주요 업종</label>
+                                <select class="form-select">
+                                    <option>반도체/전자</option>
+                                    <option>소프트웨어/AI</option>
+                                    <option>바이오/의료기기</option>
+                                    <option>드론/항공</option>
+                                    <option>기계/장비</option>
+                                    <option>기타</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-header">
+                            <div class="step-number">2</div>
+                            <div class="step-title">기술/제품 정보</div>
+                        </div>
+                        <div class="step-content">
+                            <div class="form-group">
+                                <label class="form-label">주요 기술 또는 제품</label>
+                                <input type="text" class="form-input" placeholder="예: 자율주행 센서, AI 알고리즘 등">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">수출 예정 국가</label>
+                                <select class="form-select">
+                                    <option>미국</option>
+                                    <option>중국</option>
+                                    <option>일본</option>
+                                    <option>EU 국가</option>
+                                    <option>동남아시아</option>
+                                    <option>기타</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-item">
+                        <div class="step-header">
+                            <div class="step-number">3</div>
+                            <div class="step-title">긴급도</div>
+                        </div>
+                        <div class="step-content">
+                            <div class="form-group">
+                                <label class="form-label">수출 시급성</label>
+                                <select class="form-select">
+                                    <option>1주일 이내 (긴급)</option>
+                                    <option>1개월 이내 (보통)</option>
+                                    <option>3개월 이내 (여유)</option>
+                                    <option>6개월 이후 (장기계획)</option>
+                                </select>
+                            </div>
+                            <button class="btn-hero" style="width: 100%; margin-top: 1rem;" onclick="runDiagnosis()">
+                                🎯 AI 진단 시작하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diagnosis Result (Hidden initially) -->
+                <div id="diagnosisResult" style="display: none; margin-top: 2rem; background: rgba(255,255,255,0.95); color: var(--dark-gray); border-radius: 12px; padding: 2rem;">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--success-green); margin-bottom: 0.5rem;">✅ 진단 완료</h3>
+                        <div id="diagnosisScore" style="font-size: 3rem; font-weight: 800; color: var(--success-green);">15%</div>
+                        <div style="font-weight: 600;">전략기술 해당 확률</div>
+                    </div>
+                    
+                    <div style="background: rgba(0, 135, 90, 0.1); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
+                        <h4 style="color: var(--success-green); margin-bottom: 1rem;">🎉 좋은 소식!</h4>
+                        <p style="margin-bottom: 1rem;">입력하신 정보를 바탕으로 분석한 결과, <strong>전략물자 통제 대상일 가능성이 낮습니다.</strong></p>
+                        <p>일반적인 수출 절차로 진행 가능할 것으로 예상됩니다.</p>
+                    </div>
+                    
+                    <div style="background: rgba(255, 171, 0, 0.1); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
+                        <h4 style="color: var(--warning-yellow); margin-bottom: 1rem;">⚠️ 권고사항</h4>
+                        <ul style="margin: 0; padding-left: 1.5rem;">
+                            <li>최종 확인을 위해 전문가 상담을 받아보세요</li>
+                            <li>수출 예정 기술의 상세 사양을 검토해보세요</li>
+                            <li>해당 국가별 특별 규제사항을 확인하세요</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-success" style="flex: 1;">💬 전문가 상담 신청</button>
+                        <button class="btn btn-primary" style="flex: 1;">📋 상세 분석 요청</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Stories -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        🏆 성공 사례
+                        <span class="card-badge">실제 고객</span>
+                    </h2>
+                </div>
+                
+                <div class="success-stories">
+                    <div class="story-card fade-in">
+                        <div class="company-logo">🚁</div>
+                        <div class="company-name">에어로테크</div>
+                        <div class="company-type">드론 제조 스타트업 (직원 23명)</div>
+                        
+                        <div class="story-metrics">
+                            <div class="metric">
+                                <div class="metric-value">38일</div>
+                                <div class="metric-label">단축된 처리기간</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">8.3억</div>
+                                <div class="metric-label">절약된 손실</div>
+                            </div>
+                        </div>
+                        
+                        <div class="story-quote">
+                            "복잡했던 드론 수출 절차가 AI 플랫폼 덕분에 단순해졌어요. 
+                            판정 지연으로 잃을 뻔한 해외 계약을 성공적으로 성사시켰습니다."
+                        </div>
+                    </div>
+
+                    <div class="story-card fade-in">
+                        <div class="company-logo">🧬</div>
+                        <div class="company-name">바이오메드</div>
+                        <div class="company-type">의료 AI 중소기업 (직원 67명)</div>
+                        
+                        <div class="story-metrics">
+                            <div class="metric">
+                                <div class="metric-value">29일</div>
+                                <div class="metric-label">단축된 처리기간</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">12억</div>
+                                <div class="metric-label">추가 수출 성과</div>
+                            </div>
+                        </div>
+                        
+                        <div class="story-quote">
+                            "AI 판정 시스템 덕분에 의료 AI 기술의 유럽 수출이 빨라졌어요. 
+                            경쟁사보다 2개월 먼저 시장에 진입할 수 있었습니다."
+                        </div>
+                    </div>
+
+                    <div class="story-card fade-in">
+                        <div class="company-logo">🔬</div>
+                        <div class="company-name">나노솔루션</div>
+                        <div class="company-type">반도체 장비 중견기업 (직원 456명)</div>
+                        
+                        <div class="story-metrics">
+                            <div class="metric">
+                                <div class="metric-value">45일</div>
+                                <div class="metric-label">단축된 처리기간</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">23억</div>
+                                <div class="metric-label">증가한 연매출</div>
+                            </div>
+                        </div>
+                        
+                        <div class="story-quote">
+                            "중소기업 전용 서비스 덕분에 복잡한 반도체 장비 수출이 쉬워졌어요. 
+                            이제 글로벌 시장 확대에 집중할 수 있습니다."
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Regulations -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        🌍 글로벌 규제 동향
+                        <span class="card-badge">실시간 업데이트</span>
+                    </h2>
+                </div>
+                
+                <div class="regulation-updates">
+                    <div class="regulation-item fade-in">
+                        <div class="regulation-header">
+                            <div class="regulation-country">
+                                <div class="country-flag">🇺🇸</div>
+                                <span>미국 (EAR)</span>
+                            </div>
+                            <div class="regulation-date">3시간 전</div>
+                        </div>
+                        <div class="regulation-title">AI 반도체 수출 규제 확대 발표</div>
+                        <div class="regulation-impact">중간 영향</div>
+                        <div class="regulation-description">
+                            특정 성능 이상의 AI 칩에 대한 추가 수출 제한 조치가 발표되었습니다. 
+                            FLOPS 기준이 강화되어 한국 기업 영향 검토가 필요합니다.
+                        </div>
+                    </div>
+
+                    <div class="regulation-item fade-in">
+                        <div class="regulation-header">
+                            <div class="regulation-country">
+                                <div class="country-flag">🇪🇺</div>
+                                <span>유럽연합 (EU)</span>
+                            </div>
+                            <div class="regulation-date">1일 전</div>
+                        </div>
+                        <div class="regulation-title">Dual-Use 목록 개정안 확정</div>
+                        <div class="regulation-impact">낮은 영향</div>
+                        <div class="regulation-description">
+                            사이버 보안 관련 기술의 분류 기준이 일부 완화되었습니다. 
+                            한국 IT 기업들에게는 긍정적 영향이 예상됩니다.
+                        </div>
+                    </div>
+
+                    <div class="regulation-item fade-in">
+                        <div class="regulation-header">
+                            <div class="regulation-country">
+                                <div class="country-flag">🇯🇵</div>
+                                <span>일본 (외환법)</span>
+                            </div>
+                            <div class="regulation-date">2일 전</div>
+                        </div>
+                        <div class="regulation-title">경제안보 관련 운용 가이드 업데이트</div>
+                        <div class="regulation-impact">낮은 영향</div>
+                        <div class="regulation-description">
+                            반도체 제조 장비의 수출 심사 절차가 간소화되었습니다. 
+                            한일 기술 협력에 도움이 될 것으로 예상됩니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- AI Chatbot -->
+            <div class="chatbot-container" id="chatbot">
+                <div class="chatbot-header">
+                    <div class="bot-avatar">🤖</div>
+                    <div class="bot-info">
+                        <div class="bot-name">무안이 (MuAni)</div>
+                        <div class="bot-status">● 24/7 상담 가능</div>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            안녕하세요! 무역안보 전문 AI 상담사 무안이입니다. 
+                            수출통제 관련 궁금한 점이 있으시면 언제든 물어보세요! 😊
+                            <div class="message-time">방금 전</div>
+                        </div>
+                    </div>
+                    
+                    <div class="message bot">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            다음과 같은 질문들을 도와드릴 수 있어요:<br>
+                            • 사전판정 절차 안내<br>
+                            • 전략물자 해당성 문의<br>
+                            • 국가별 규제 정보<br>
+                            • 전문가 연결 요청
+                            <div class="message-time">방금 전</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <div class="input-group">
+                        <input type="text" class="chat-input-field" placeholder="궁금한 점을 입력하세요..." id="chatInput">
+                        <button class="send-button" onclick="sendMessage()">📤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Calculator -->
+            <div class="calculator" id="calculator">
+                <div class="card-header" style="padding: 0; border: none; margin-bottom: 1.5rem;">
+                    <h3 class="card-title">💰 비용 계산기</h3>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" style="color: var(--dark-gray);">수출 규모</label>
+                    <select class="form-select" style="background: white; color: var(--dark-gray); border-color: #E1E5EA;">
+                        <option>소규모 (1억원 미만)</option>
+                        <option>중규모 (1-10억원)</option>
+                        <option>대규모 (10억원 이상)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" style="color: var(--dark-gray);">서비스 유형</label>
+                    <select class="form-select" style="background: white; color: var(--dark-gray); border-color: #E1E5EA;">
+                        <option>기본 AI 판정</option>
+                        <option>전문가 컨설팅 포함</option>
+                        <option>원스톱 수출 지원</option>
+                        <option>연간 구독 서비스</option>
+                    </select>
+                </div>
+                
+                <div class="calc-result">
+                    <div class="calc-amount">무료</div>
+                    <div class="calc-label">예상 비용</div>
+                    <div class="calc-breakdown">
+                        <div class="breakdown-item">
+                            <div class="breakdown-value">0원</div>
+                            <div class="breakdown-label">AI 판정</div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-value">3일</div>
+                            <div class="breakdown-label">처리 시간</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(0, 135, 90, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                    <strong style="color: var(--success-green);">🎉 출시 기념 이벤트</strong>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">2025년 12월까지 모든 서비스 무료 이용!</p>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">🔗 빠른 연결</h3>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <button class="btn btn-primary" style="width: 100%;">
+                        📋 공식 사전판정 신청
+                    </button>
+                    <button class="btn btn-secondary" style="width: 100%;">
+                        📞 전문가 상담 예약
+                    </button>
+                    <button class="btn btn-success" style="width: 100%;">
+                        📚 교육 과정 등록
+                    </button>
+                    <button class="btn btn-secondary" style="width: 100%;">
+                        🌍 해외 진출 가이드
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">📈 실시간 현황</h3>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.9rem; color: var(--medium-gray);">오늘 처리된 건수</span>
+                        <span style="font-weight: 700; color: var(--primary-blue);">247건</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.9rem; color: var(--medium-gray);">평균 처리 시간</span>
+                        <span style="font-weight: 700; color: var(--success-green);">1.3일</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.9rem; color: var(--medium-gray);">활성 사용자</span>
+                        <span style="font-weight: 700; color: var(--primary-blue);">1,847명</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.9rem; color: var(--medium-gray);">만족도</span>
+                        <span style="font-weight: 700; color: var(--success-green);">94.3%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chat functionality
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            const messageText = input.value.trim();
+            
+            if (!messageText) return;
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.innerHTML = `
+                <div class="message-avatar">👤</div>
+                <div class="message-content">
+                    ${messageText}
+                    <div class="message-time">방금 전</div>
+                </div>
+            `;
+            messages.appendChild(userMessage);
+            
+            // Clear input
+            input.value = '';
+            
+            // Simulate bot response
+            setTimeout(() => {
+                const botMessage = document.createElement('div');
+                botMessage.className = 'message bot';
+                
+                let response = getBotResponse(messageText);
+                
+                botMessage.innerHTML = `
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        ${response}
+                        <div class="message-time">방금 전</div>
+                    </div>
+                `;
+                messages.appendChild(botMessage);
+                
+                // Scroll to bottom
+                messages.scrollTop = messages.scrollHeight;
+            }, 1000);
+            
+            // Scroll to bottom
+            messages.scrollTop = messages.scrollHeight;
+        }
+        
+        function getBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('드론') || lowerMessage.includes('무인기')) {
+                return '드론 관련 문의시군요! 자율비행 기능과 비행시간이 핵심 판단 기준입니다. 30분 이상 비행 가능한 드론은 9A012 전략물자에 해당할 수 있어요. 상세한 사양을 알려주시면 더 정확한 안내를 도와드릴게요. 📡';
+            } else if (lowerMessage.includes('ai') || lowerMessage.includes('인공지능')) {
+                return 'AI 기술 수출 문의시군요! 연산 성능(FLOPS)과 학습 방법론이 주요 기준입니다. 특히 군사용 AI나 이중용도 AI는 별도 심사가 필요해요. 어떤 종류의 AI 기술인지 알려주시면 구체적으로 안내해드릴게요. 🧠';
+            } else if (lowerMessage.includes('비용') || lowerMessage.includes('가격')) {
+                return '비용 관련 문의시군요! 현재 출시 기념으로 2025년 12월까지 모든 기본 서비스가 무료예요! 🎉 AI 판정, 전문가 상담, 교육까지 모두 무료로 이용하실 수 있습니다. 우측의 비용 계산기도 활용해보세요!';
+            } else if (lowerMessage.includes('시간') || lowerMessage.includes('기간')) {
+                return '처리 시간이 궁금하시군요! AI 시스템 도입으로 평균 처리 시간이 크게 단축되었어요:<br>• 저위험: 1일 이내<br>• 중위험: 3일 이내<br>• 고위험: 5일 이내<br>기존 23일에서 최대 95% 단축되었습니다! ⚡';
+            } else if (lowerMessage.includes('전문가') || lowerMessage.includes('상담')) {
+                return '전문가 상담을 원하시는군요! 24시간 내에 분야별 전문가가 연결됩니다:<br>• 기술 분야: 김수출 박사<br>• 법률 분야: 박법률 변호사<br>• 정책 분야: 이정책 연구원<br>상담 신청하시겠어요? 💬';
+            } else {
+                return '네, 무엇을 도와드릴까요? 다음과 같은 질문들을 편하게 해주세요:<br>• "드론 수출 가능한가요?"<br>• "AI 기술 판정 받으려면?"<br>• "처리 시간 얼마나 걸리나요?"<br>• "전문가 상담 받고 싶어요"<br>더 구체적으로 질문해주시면 정확한 답변을 드릴게요! 😊';
+            }
+        }
+        
+        // Enter key support for chat
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Diagnosis functionality
+        function runDiagnosis() {
+            const resultDiv = document.getElementById('diagnosisResult');
+            const scoreDiv = document.getElementById('diagnosisScore');
+            
+            // Show loading first
+            resultDiv.style.display = 'block';
+            scoreDiv.textContent = '분석중...';
+            
+            // Simulate analysis
+            setTimeout(() => {
+                const scores = [5, 15, 23, 67, 85];
+                const randomScore = scores[Math.floor(Math.random() * scores.length)];
+                
+                // Animate score counting
+                let currentScore = 0;
+                const increment = randomScore / 50;
+                
+                const counter = setInterval(() => {
+                    currentScore += increment;
+                    if (currentScore >= randomScore) {
+                        currentScore = randomScore;
+                        clearInterval(counter);
+                    }
+                    scoreDiv.textContent = Math.round(currentScore) + '%';
+                    
+                    // Update color based on score
+                    if (currentScore >= 70) {
+                        scoreDiv.style.color = 'var(--danger-red)';
+                    } else if (currentScore >= 40) {
+                        scoreDiv.style.color = 'var(--warning-yellow)';
+                    } else {
+                        scoreDiv.style.color = 'var(--success-green)';
+                    }
+                }, 20);
+                
+                // Update content based on score
+                updateDiagnosisContent(randomScore);
+                
+            }, 2000);
+        }
+        
+        function updateDiagnosisContent(score) {
+            const resultDiv = document.getElementById('diagnosisResult');
+            
+            if (score >= 70) {
+                resultDiv.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--danger-red); margin-bottom: 0.5rem;">⚠️ 주의 필요</h3>
+                        <div style="font-size: 3rem; font-weight: 800; color: var(--danger-red);">${score}%</div>
+                        <div style="font-weight: 600;">전략기술 해당 확률</div>
+                    </div>
+                    
+                    <div style="background: rgba(222, 53, 11, 0.1); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
+                        <h4 style="color: var(--danger-red); margin-bottom: 1rem;">🚨 전문가 검토 필요</h4>
+                        <p style="margin-bottom: 1rem;">입력하신 정보를 바탕으로 분석한 결과, <strong>전략물자 통제 대상일 가능성이 높습니다.</strong></p>
+                        <p>반드시 공식 사전판정을 받으신 후 수출을 진행하세요.</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-primary" style="flex: 1;">📋 공식 사전판정 신청</button>
+                        <button class="btn btn-success" style="flex: 1;">💬 긴급 전문가 상담</button>
+                    </div>
+                `;
+            } else if (score >= 40) {
+                resultDiv.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--warning-yellow); margin-bottom: 0.5rem;">⚠️ 검토 권장</h3>
+                        <div style="font-size: 3rem; font-weight: 800; color: var(--warning-yellow);">${score}%</div>
+                        <div style="font-weight: 600;">전략기술 해당 확률</div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 171, 0, 0.1); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;">
+                        <h4 style="color: var(--warning-yellow); margin-bottom: 1rem;">⚠️ 신중한 검토 필요</h4>
+                        <p style="margin-bottom: 1rem;">입력하신 정보에서 <strong>일부 전략기술 요소가 감지</strong>되었습니다.</p>
+                        <p>전문가 상담을 통해 정확한 판정을 받아보시기를 권장합니다.</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-success" style="flex: 1;">💬 전문가 상담 신청</button>
+                        <button class="btn btn-primary" style="flex: 1;">📋 상세 분석 요청</button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe fade-in elements
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Floating animation with GSAP
+        if (typeof gsap !== 'undefined') {
+            gsap.to('.floating', {
+                y: -10,
+                duration: 2,
+                ease: 'power1.inOut',
+                yoyo: true,
+                repeat: -1
+            });
+        }
+    </script>
+</body>
+</html>

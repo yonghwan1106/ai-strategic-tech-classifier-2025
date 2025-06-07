@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국민 참여형 교육 생태계 | TSIP 2025</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0052CC;
+            --primary-purple: #8777D9;
+            --success-green: #00875A;
+            --warning-yellow: #FFAB00;
+            --danger-red: #DE350B;
+            --white: #FFFFFF;
+            --light-gray: #F4F5F7;
+            --medium-gray: #A5ADBA;
+            --dark-gray: #172B4D;
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            --gradient-education: linear-gradient(135deg, #667eea, #764ba2);
+            --gradient-community: linear-gradient(135deg, #f093fb, #f5576c);
+            --shadow-light: 0 2px 8px rgba(0, 82, 204, 0.1);
+            --shadow-medium: 0 4px 16px rgba(0, 82, 204, 0.15);
+            --shadow-heavy: 0 8px 32px rgba(0, 82, 204, 0.2);
+            --font-korean: 'Pretendard', sans-serif;
+            --font-english: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-korean);
+            background: #FAFBFC;
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 82, 204, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-education);
+            color: white;
+            padding: 12rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grid" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="rgba(255,255,255,0.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><circle cx="500" cy="500" r="500" fill="url(%23grid)"/></svg>') center/cover;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #FFFFFF, #B3D9FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero-description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+            font-family: var(--font-english);
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-hero-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .nav-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+        }
+
+        .nav-breadcrumb a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-education);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="25" cy="75" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="75" cy="25" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            min-height: calc(100vh - 100px);
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #E1E5EA;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-badge {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Learning Path Cards */
+        .learning-paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .path-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .path-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .path-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-education);
+        }
+
+        .path-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-education);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .path-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .path-target {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .path-description {
+            color: var(--medium-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .path-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .path-features li {
+            padding: 0.4rem 0;
+            color: var(--dark-gray);
+            position: relative;
+            padding-left: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .path-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
+        .path-progress {
+            background: #F8F9FA;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .progress-percentage {
+            font-size: 0.85rem;
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #E1E5EA;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-education);
+            border-radius: 4px;
+            transition: width 2s ease;
+        }
+
+        /* Gamification Elements */
+        .user-profile {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-level {
+            background: var(--gradient-education);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .badge-bronze { background: #CD7F32; }
+        .badge-silver { background: #C0C0C0; }
+        .badge-gold { background: #FFD700; }
+        .badge-locked { background: #E1E5EA; color: #A5ADBA; }
+
+        /* Leaderboard */
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: white;
+            margin-bottom: 0.5rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .rank-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: white;
+        }
+
+        .rank-1 { background: #FFD700; }
+        .rank-2 { background: #C0C0C0; }
+        .rank-3 { background: #CD7F32; }
+        .rank-other { background: var(--medium-gray); }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-progress {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+        }
+
+        .points {
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        /* Citizen Reporting */
+        .report-form {
+            background: #F8F9FA;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #E1E5EA;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Expert Network */
+        .expert-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .expert-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+            transition: all 0.3s ease;
+        }
+
+        .expert-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .expert-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .expert-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .expert-title {
+            color: var(--medium-gray);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .expert-specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .specialty-tag {
+            background: rgba(0, 82, 204, 0.1);
+            color: var(--primary-blue);
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .expert-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .status-online {
+            width: 8px;
+            height: 8px;
+            background: var(--success-green);
+            border-radius: 50%;
+        }
+
+        /* Community Features */
+        .community-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #E1E5EA;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-community);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .post-meta {
+            flex: 1;
+        }
+
+        .post-author {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .post-time {
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+        }
+
+        .post-content {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--medium-gray);
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .post-action:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .learning-paths {
+                grid-template-columns: 1fr;
+            }
+            
+            .expert-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero {
+                padding: 10rem 1rem 3rem;
+            }
+            
+            .hero-badge {
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero {
+                padding: 9rem 1rem 2rem;
+            }
+            
+            .hero-badge {
+                margin-top: 1.5rem;
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span>🛡️</span>
+                <span>TSIP 2025</span>
+            </a>
+            
+            <div class="nav-breadcrumb">
+                <a href="index.html">홈</a>
+                <span>></span>
+                <span>Pillar 2: 국민 참여형 교육 생태계</span>
+            </div>
+            
+            <div class="header-actions">
+                <a href="ai-system.html" class="btn btn-secondary">🤖 AI 판별</a>
+                <a href="business.html" class="btn btn-primary">🏢 기업 지원</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge floating">
+                👥 Pillar 2: 국민 참여형 교육 생태계
+            </div>
+            
+            <h1 class="hero-title">
+                전 국민이 함께 만드는<br>
+                스마트 무역안보 사회
+            </h1>
+            
+            <p class="hero-subtitle">
+                개인화된 교육부터 전문가 네트워크까지<br>
+                무역안보 인식 확산의 새로운 패러다임
+            </p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="80000">0</div>
+                    <div class="hero-stat-label">교육 이수자 (명)</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="15000">0</div>
+                    <div class="hero-stat-label">월간 활성 사용자</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number counter" data-target="380">0</div>
+                    <div class="hero-stat-label">전문가 네트워크</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#learning-platform" class="btn-hero-primary">
+                    🎓 지금 학습 시작하기
+                </a>
+                <a href="#expert-network" class="btn-hero-secondary">
+                    👨‍💼 전문가 네트워크 보기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- User Profile -->
+            <div class="user-profile">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-name">김무역</div>
+                <div class="profile-level">무역안보 전문가 Lv.7</div>
+                
+                <div class="badges-grid">
+                    <div class="badge badge-gold" title="첫 수료증">🏆</div>
+                    <div class="badge badge-silver" title="연속 학습">📚</div>
+                    <div class="badge badge-bronze" title="커뮤니티 참여">💬</div>
+                    <div class="badge badge-gold" title="전문가 인증">⭐</div>
+                    <div class="badge badge-silver" title="신고 기여">🚨</div>
+                    <div class="badge badge-locked" title="잠금됨">🔒</div>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <div class="progress-header">
+                        <span class="progress-label">다음 레벨까지</span>
+                        <span class="progress-percentage">73%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 73%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">🏆 이달의 리더보드</h3>
+                </div>
+                
+                <div class="leaderboard-item">
+                    <div class="rank-badge rank-1">1</div>
+                    <div class="user-info">
+                        <div class="user-name">이수출★</div>
+                        <div class="user-progress">전 과정 수료</div>
+                    </div>
+                    <div class="points">2,847pt</div>
+                </div>
+                
+                <div class="leaderboard-item">
+                    <div class="rank-badge rank-2">2</div>
+                    <div class="user-info">
+                        <div class="user-name">박안보</div>
+                        <div class="user-progress">16개 과정 완료</div>
+                    </div>
+                    <div class="points">2,301pt</div>
+                </div>
+                
+                <div class="leaderboard-item">
+                    <div class="rank-badge rank-3">3</div>
+                    <div class="user-info">
+                        <div class="user-name">최전략</div>
+                        <div class="user-progress">12개 과정 완료</div>
+                    </div>
+                    <div class="points">1,956pt</div>
+                </div>
+                
+                <div class="leaderboard-item">
+                    <div class="rank-badge rank-other">7</div>
+                    <div class="user-info">
+                        <div class="user-name">김무역 (나)</div>
+                        <div class="user-progress">8개 과정 완료</div>
+                    </div>
+                    <div class="points">1,423pt</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Learning Paths Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        📚 맞춤형 학습 경로
+                        <span class="card-badge">AI 추천</span>
+                    </h2>
+                </div>
+                
+                <div class="learning-paths">
+                    <div class="path-card fade-in">
+                        <div class="path-icon">🎓</div>
+                        <div class="path-title">일반 국민 기초 과정</div>
+                        <div class="path-target">타겟: 일반인</div>
+                        <div class="path-description">
+                            무역안보의 기본 개념부터 시민으로서 할 수 있는 역할까지, 
+                            재미있는 애니메이션과 게임으로 쉽게 배워보세요.
+                        </div>
+                        <ul class="path-features">
+                            <li>인터랙티브 웹툰 강의</li>
+                            <li>퀴즈 게임 및 시뮬레이션</li>
+                            <li>실생활 사례 중심 학습</li>
+                            <li>모바일 최적화 콘텐츠</li>
+                        </ul>
+                        <div class="path-progress">
+                            <div class="progress-header">
+                                <span class="progress-label">진행률</span>
+                                <span class="progress-percentage">45%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">계속 학습하기</button>
+                    </div>
+
+                    <div class="path-card fade-in">
+                        <div class="path-icon">🎯</div>
+                        <div class="path-title">중소기업 실무자 과정</div>
+                        <div class="path-target">타겟: 기업 실무자</div>
+                        <div class="path-description">
+                            실제 수출 업무에 필요한 실무 지식과 체크리스트, 
+                            템플릿을 활용한 실습 중심 교육 과정입니다.
+                        </div>
+                        <ul class="path-features">
+                            <li>업종별 맞춤 가이드</li>
+                            <li>실무 체크리스트 제공</li>
+                            <li>사례 기반 워크숍</li>
+                            <li>전문가 멘토링</li>
+                        </ul>
+                        <div class="path-progress">
+                            <div class="progress-header">
+                                <span class="progress-label">진행률</span>
+                                <span class="progress-percentage">73%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 73%;"></div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">계속 학습하기</button>
+                    </div>
+
+                    <div class="path-card fade-in">
+                        <div class="path-icon">🎖️</div>
+                        <div class="path-title">전문가 심화 과정</div>
+                        <div class="path-target">타겟: 전문가</div>
+                        <div class="path-description">
+                            최신 국제 규제 동향과 고급 전략 수립을 위한 
+                            전문가 수준의 심화 교육 과정입니다.
+                        </div>
+                        <ul class="path-features">
+                            <li>국제 규제 심화 분석</li>
+                            <li>전략 수립 워크숍</li>
+                            <li>해외 전문가 특강</li>
+                            <li>정책 제언 프로젝트</li>
+                        </ul>
+                        <div class="path-progress">
+                            <div class="progress-header">
+                                <span class="progress-label">진행률</span>
+                                <span class="progress-percentage">28%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 28%;"></div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">시작하기</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Citizen Reporting System -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        🚨 시민 신고 시스템
+                        <span class="card-badge">실시간 접수</span>
+                    </h2>
+                </div>
+                
+                <p style="color: var(--medium-gray); margin-bottom: 1.5rem;">
+                    의심스러운 무역안보 위반 행위를 발견하셨나요? 
+                    간편하게 신고하여 국가 안보에 기여하세요.
+                </p>
+                
+                <div class="report-form">
+                    <div class="form-group">
+                        <label class="form-label">신고 유형</label>
+                        <select class="form-select">
+                            <option>전략물자 불법 수출 의심</option>
+                            <option>기술 유출 의심</option>
+                            <option>허가 없는 기술 이전</option>
+                            <option>기타 무역안보 위반</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">발견 위치 (선택사항)</label>
+                        <input type="text" class="form-input" placeholder="예: 서울시 강남구 또는 온라인">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">상세 내용</label>
+                        <textarea class="form-textarea" placeholder="구체적인 상황과 증거를 설명해주세요. 익명으로 처리되며, 개인정보는 수집하지 않습니다."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">첨부 파일 (선택사항)</label>
+                        <input type="file" class="form-input" multiple>
+                        <small style="color: var(--medium-gray); font-size: 0.8rem;">
+                            이미지, 문서 등 증빙 자료 (최대 10MB)
+                        </small>
+                    </div>
+                    
+                    <button class="btn btn-primary" style="width: 100%;">
+                        🚨 익명 신고하기
+                    </button>
+                </div>
+                
+                <div style="background: rgba(0, 135, 90, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <strong style="color: var(--success-green);">✓ 유효한 신고 보상</strong>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--dark-gray);">
+                        무역안보 확보에 기여한 신고는 심사 후 최대 100만원의 포상금을 지급합니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Expert Network -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        👨‍💼 전문가 네트워크
+                        <span class="card-badge">실시간 상담</span>
+                    </h2>
+                </div>
+                
+                <p style="color: var(--medium-gray); margin-bottom: 1.5rem;">
+                    분야별 최고 전문가들과 직접 상담하고 조언을 받아보세요.
+                </p>
+                
+                <div class="expert-cards">
+                    <div class="expert-card fade-in">
+                        <div class="expert-avatar">👨‍💼</div>
+                        <div class="expert-name">김수출 박사</div>
+                        <div class="expert-title">전 무역안보관리원 팀장</div>
+                        <div class="expert-specialties">
+                            <span class="specialty-tag">수출통제</span>
+                            <span class="specialty-tag">바세나르체제</span>
+                            <span class="specialty-tag">정책</span>
+                        </div>
+                        <div class="expert-status">
+                            <div class="status-online"></div>
+                            <span>온라인 상담 가능</span>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            💬 상담 신청
+                        </button>
+                    </div>
+
+                    <div class="expert-card fade-in">
+                        <div class="expert-avatar">👩‍🔬</div>
+                        <div class="expert-name">이기술 연구원</div>
+                        <div class="expert-title">KAIST 반도체학과 교수</div>
+                        <div class="expert-specialties">
+                            <span class="specialty-tag">반도체</span>
+                            <span class="specialty-tag">AI 칩</span>
+                            <span class="specialty-tag">기술평가</span>
+                        </div>
+                        <div class="expert-status">
+                            <div class="status-online"></div>
+                            <span>온라인 상담 가능</span>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            💬 상담 신청
+                        </button>
+                    </div>
+
+                    <div class="expert-card fade-in">
+                        <div class="expert-avatar">👨‍⚖️</div>
+                        <div class="expert-name">박법률 변호사</div>
+                        <div class="expert-title">국제무역법 전문변호사</div>
+                        <div class="expert-specialties">
+                            <span class="specialty-tag">무역법</span>
+                            <span class="specialty-tag">컴플라이언스</span>
+                            <span class="specialty-tag">분쟁해결</span>
+                        </div>
+                        <div class="expert-status">
+                            <div style="width: 8px; height: 8px; background: var(--warning-yellow); border-radius: 50%;"></div>
+                            <span>예약 상담 가능</span>
+                        </div>
+                        <button class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">
+                            📅 예약하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        💬 커뮤니티 게시판
+                        <span class="card-badge">실시간</span>
+                    </h2>
+                </div>
+                
+                <div class="community-posts">
+                    <div class="post-card fade-in">
+                        <div class="post-header">
+                            <div class="post-avatar">중</div>
+                            <div class="post-meta">
+                                <div class="post-author">중소기업사장</div>
+                                <div class="post-time">5분 전</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            드론 수출 관련 문의드립니다. 자율비행 기능이 있는 농업용 드론인데, 
+                            사전판정이 필요한지 궁금합니다. 비행시간은 25분 정도입니다.
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">👍 도움됨 12</div>
+                            <div class="post-action">💬 댓글 3</div>
+                            <div class="post-action">🔗 공유</div>
+                        </div>
+                    </div>
+
+                    <div class="post-card fade-in">
+                        <div class="post-header">
+                            <div class="post-avatar">전</div>
+                            <div class="post-meta">
+                                <div class="post-author">전문가김박사 ⭐</div>
+                                <div class="post-time">1시간 전</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            [공지] 미국 최신 AI 반도체 수출 규제 변경사항 안내드립니다. 
+                            첨부파일에 상세 분석 자료 올렸으니 참고해주세요.
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">👍 도움됨 47</div>
+                            <div class="post-action">💬 댓글 15</div>
+                            <div class="post-action">🔗 공유</div>
+                        </div>
+                    </div>
+
+                    <div class="post-card fade-in">
+                        <div class="post-header">
+                            <div class="post-avatar">신</div>
+                            <div class="post-meta">
+                                <div class="post-author">신입무역인</div>
+                                <div class="post-time">3시간 전</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            무역안보 교육 기초과정 수료했습니다! 🎉 정말 유익했어요. 
+                            특히 사례 중심 설명이 이해하기 쉬웠습니다. 다음 단계 추천 부탁드려요.
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">👍 도움됨 23</div>
+                            <div class="post-action">💬 댓글 8</div>
+                            <div class="post-action">🔗 공유</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                    ✏️ 새 글 작성하기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    
+                    if (target >= 1000) {
+                        counter.textContent = current.toLocaleString('ko-KR', {
+                            maximumFractionDigits: 0
+                        });
+                    } else {
+                        counter.textContent = current.toFixed(1);
+                    }
+                }, 20);
+            });
+        }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe fade-in elements
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Start counter animation
+            setTimeout(animateCounters, 1000);
+
+            // Animate progress bars
+            setTimeout(() => {
+                document.querySelectorAll('.progress-fill').forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 1500);
+        });
+
+        // Floating animation with GSAP
+        if (typeof gsap !== 'undefined') {
+            gsap.to('.floating', {
+                y: -10,
+                duration: 2,
+                ease: 'power1.inOut',
+                yoyo: true,
+                repeat: -1
+            });
+        }
+
+        // Report form submission
+        document.querySelector('.report-form .btn-primary').addEventListener('click', function() {
+            alert('신고가 정상적으로 접수되었습니다. 검토 후 연락드리겠습니다.\n신고번호: REP-2025-0001234');
+        });
+
+        // Expert consultation
+        document.querySelectorAll('.expert-card .btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('전문가 상담 신청이 완료되었습니다.\n24시간 내에 전문가가 연락드릴 예정입니다.');
+            });
+        });
+
+        // Learning path continue button
+        document.querySelectorAll('.path-card .btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const pathTitle = this.closest('.path-card').querySelector('.path-title').textContent;
+                alert(`"${pathTitle}" 학습을 계속합니다.\n학습 플랫폼으로 이동합니다.`);
+            });
+        });
+    </script>
+</body>
+</html>
