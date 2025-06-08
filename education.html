@@ -381,6 +381,58 @@
             opacity: 0.8;
         }
 
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-hero-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
         /* Main Container */
         .main-container {
             max-width: 1400px;
@@ -979,19 +1031,22 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
+        <div class="hero-content"><br><br>
             <div class="hero-badge floating">
                 👥 Pillar 2: 국민 참여형 교육 생태계
             </div>
             
             <h1 class="hero-title">
-                전 국민이 함께 만드는<br>
-                스마트 무역안보 사회
+                국민 참여형 교육 생태계
             </h1>
             
-            <p class="hero-subtitle">
-                개인화된 교육부터 전문가 네트워크까지<br>
-                무역안보 인식 확산의 새로운 패러다임
+            <h2 class="hero-subtitle">
+                전 국민이 함께 만드는 스마트 무역안보 사회
+            </h2>
+            
+            <p class="hero-description">
+                개인화된 교육부터 전문가 네트워크까지,
+                무역안보 인식 확산의 새로운 패러다임을 제시합니다
             </p>
 
             <div class="hero-stats">

@@ -944,36 +944,69 @@
             });
         }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Start counter animation
-            setTimeout(animateCounters, 500);
-            
-            // Create charts
-            setTimeout(createCharts, 1000);
-        });
-
-        // Add scroll-triggered animations
-        window.addEventListener('scroll', function() {
-            const cards = document.querySelectorAll('.stat-card, .chart-card, .comparison-card');
-            cards.forEach(card => {
-                const rect = card.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }
-            });
-        });
-
-        // Add initial styles for animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.stat-card, .chart-card, .comparison-card');
-            cards.forEach(card => {
+        // Initialize scroll-triggered animations
+        function initScrollAnimations() {
+            // Only apply scroll animations to charts and comparison sections (not stat cards)
+            const scrollCards = document.querySelectorAll('.chart-card, .comparison-card');
+            scrollCards.forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'all 0.6s ease';
             });
+        }
+
+        // Check scroll-triggered animations
+        function checkScrollAnimations() {
+            const scrollCards = document.querySelectorAll('.chart-card, .comparison-card');
+            scrollCards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Initialize stat card animations
+        function initStatCards() {
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                // Stagger the animation for visual effect
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0) scale(1)';
+                }, index * 100);
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial styles for stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px) scale(0.95)';
+                card.style.transition = 'all 0.6s ease';
+            });
+
+            // Initialize scroll-triggered animations for lower sections
+            initScrollAnimations();
+            
+            // Show stat cards immediately with staggered animation
+            setTimeout(initStatCards, 200);
+            
+            // Start counter animation
+            setTimeout(animateCounters, 800);
+            
+            // Create charts
+            setTimeout(createCharts, 1200);
+            
+            // Check scroll animations on initial load
+            setTimeout(checkScrollAnimations, 100);
         });
+
+        // Add scroll-triggered animations
+        window.addEventListener('scroll', checkScrollAnimations);
     </script>
 </body>
 </html>
